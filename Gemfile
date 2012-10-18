@@ -30,6 +30,8 @@ gem "rails3-jquery-autocomplete", "~> 1.0.9"
 
 gem "kaminari", "~> 0.13.0"
 gem "twilio-ruby", "~> 3.8.0"
+gem "evently", "~> 0.0.1"
+#gem "evently", :path => '/Users/davidshapiro/Documents/Gems/evently' #git: 'https://github.com/dsshap/evently.git'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

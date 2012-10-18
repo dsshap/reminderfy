@@ -2,8 +2,8 @@ class Provider < Person
   # Include default devise modules. Others available are:
   # :token_authenticatable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :rememberable, :trackable, :validatable
+  devise :database_authenticatable, :registerable, :confirmable, :validatable,
+         :recoverable, :rememberable, :trackable
 
   ## Database authenticatable
   field :encrypted_password, :type => String, :default => ""
@@ -34,15 +34,12 @@ class Provider < Person
 
   field :establishment_name
 
-  has_many :clients
+  has_many :clients, autosave: true
+  has_many :reminder_sets, autosave: true
 
-  attr_accessible :password, :remember_me, :establishment_name, :clients_attributes
-
+  attr_accessible :password, :password_confirmation, :remember_me, :establishment_name, :clients_attributes, :reminder_sets_attributes
   accepts_nested_attributes_for :clients, :allow_destroy => true
 
-  def add_clients(new_client)
-    if new_client.
-    clients.push(new_client)
+  validates_presence_of :establishment_name, message: "Establishment name is required."
 
-  end
 end
