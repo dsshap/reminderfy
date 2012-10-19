@@ -10,6 +10,8 @@ class Reminder
   attr_accessible :client_id, :client
 
   validates_presence_of :client_id
+  validates_uniqueness_of :client_id, message: "Client is already part of this reminder set"
+
 
   def client=(client)
     if client.class.name.eql?('Client')

@@ -44,11 +44,11 @@ describe ReminderSet do
       client = provider.clients.create!(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
       reminder_set = provider.reminder_sets.create! send_at: Time.now, reminder_msg_tmpl: "Test Msg"
       reminder_set.reminders.create client: client
-      reminder_set.reminders.new client: client
+      reminder = reminder_set.reminders.new client: client
 
 
       reminder.should_not be_valid
-      reminder.errors[:client_id].should include('Client already exists in this reminder set.')
+      reminder.errors[:client_id].should include('Client is already part of this reminder set')
       provider.reminder_sets.first.reminders.count.should eql(1)
     end
 

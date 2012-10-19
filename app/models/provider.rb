@@ -40,7 +40,7 @@ class Provider < Person
   attr_accessible :password, :password_confirmation, :remember_me, :establishment_name, :clients_attributes, :reminder_sets_attributes
   accepts_nested_attributes_for :reminder_sets, :clients, :allow_destroy => true
 
-  validates_presence_of :establishment_name, message: "Establishment name is required."
+  validates_presence_of :establishment_name, message: "Establishment name is required"
 
   def add_client(client)
     if find_by_client(client).nil?

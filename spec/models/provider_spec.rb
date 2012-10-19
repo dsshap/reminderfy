@@ -17,7 +17,7 @@ describe Provider do
       #provider = Provider.create(fname: 'John', lname: 'Doe', email: 'jd@example.com', password: 'password', password_confirmation: 'password')
 
       provider.should_not be_valid
-      provider.errors[:establishment_name].should include('Establishment name is required.')
+      provider.errors[:establishment_name].should include('Establishment name is required')
     end
 
     it 'should create a provider' do
@@ -54,7 +54,7 @@ describe Provider do
       client = provider.clients.new(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com')
 
       client.should_not be_valid
-      client.errors[:phone_number].should include('Phone number is required.')
+      client.errors[:phone_number].should include('Phone number is required')
     end
 
     it 'should require unique phone number for client' do
@@ -63,7 +63,7 @@ describe Provider do
       client2 = provider.clients.new(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
 
       client2.should_not be_valid
-      client2.errors[:phone_number].should include('This phone number has already been taken.')
+      client2.errors[:phone_number].should include('This phone number has already been taken')
     end
 
   end
