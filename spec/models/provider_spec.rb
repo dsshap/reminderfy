@@ -12,7 +12,9 @@ describe Provider do
     end
 
     it 'should require establishment_name' do
-      provider = Provider.create(fname: 'John', lname: 'Doe', email: 'jd@example.com', password: 'password', password_confirmation: 'password')
+      provider = FactoryGirl.create(:provider)
+      provider[:establishment_name] = nil
+      #provider = Provider.create(fname: 'John', lname: 'Doe', email: 'jd@example.com', password: 'password', password_confirmation: 'password')
 
       provider.should_not be_valid
       provider.errors[:establishment_name].should include('Establishment name is required.')
@@ -27,7 +29,7 @@ describe Provider do
     end
 
     it 'should allow a name update without a password' do
-      provider = Provider.create(fname: 'John', lname: 'Doe', email: 'jd@example.com', password: 'password', password_confirmation: 'password', establishment_name: 'test office')
+      provider = FactoryGirl.create(:provider)
 
       provider.update_attribute(:fname, 'David')
       provider.fname.should eq('David')
@@ -38,25 +40,27 @@ describe Provider do
   context 'client creation by provider' do
 
     it 'should create a client' do
-      provider = Provider.create(fname: 'John', lname: 'Doe', email: 'jd@example.com', password: 'password', password_confirmation: 'password', establishment_name: 'test office')
-      client = provider.clients.create(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
+      provider = FactoryGirl.create(:provider)
+      c = provider.clients.new(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
+      c.save
+      #client = provider.add_client(c)
 
       provider.clients.count.should eq(1)
-      client.provider_id.should eq(provider.id)
+      c.provider_id.should eq(provider.id)
     end
 
     it 'should require phone number for client' do
-      provider = Provider.create(fname: 'John', lname: 'Doe', email: 'jd@example.com', password: 'password', password_confirmation: 'password', establishment_name: 'test office')
-      client = provider.clients.create(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com')
+      provider = FactoryGirl.create(:provider)
+      client = provider.clients.new(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com')
 
       client.should_not be_valid
       client.errors[:phone_number].should include('Phone number is required.')
     end
 
     it 'should require unique phone number for client' do
-      provider = Provider.create(fname: 'John', lname: 'Doe', email: 'jd@example.com', password: 'password', password_confirmation: 'password', establishment_name: 'test office')
-      client1 = provider.clients.create(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
-      client2 = provider.clients.create(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
+      provider = FactoryGirl.create(:provider)
+      client1 = provider.clients.create!(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
+      client2 = provider.clients.new(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
 
       client2.should_not be_valid
       client2.errors[:phone_number].should include('This phone number has already been taken.')

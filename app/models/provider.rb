@@ -34,12 +34,24 @@ class Provider < Person
 
   field :establishment_name
 
-  has_many :clients, autosave: true
-  has_many :reminder_sets, autosave: true
+  has_many :clients
+  has_many :reminder_sets
 
   attr_accessible :password, :password_confirmation, :remember_me, :establishment_name, :clients_attributes, :reminder_sets_attributes
-  accepts_nested_attributes_for :clients, :allow_destroy => true
+  accepts_nested_attributes_for :reminder_sets, :clients, :allow_destroy => true
 
   validates_presence_of :establishment_name, message: "Establishment name is required."
+
+  def add_client(client)
+    if find_by_client(client).nil?
+      clients.create! client.attributes
+    else
+      false
+    end
+  end
+
+  def find_by_client(client)
+    clients.find(client.id) rescue nil
+  end
 
 end
