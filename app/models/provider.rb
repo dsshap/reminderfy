@@ -42,16 +42,18 @@ class Provider < Person
 
   validates_presence_of :establishment_name, message: "Establishment name is required"
 
-  def add_client(client)
-    if find_by_client(client).nil?
-      clients.create! client.attributes
-    else
-      false
-    end
+  after_create :log_event
+
+  def name
+    establishment_name
   end
 
   def find_by_client(client)
     clients.find(client.id) rescue nil
+  end
+
+  def log_event
+    Evently.record(self, 'signed up')
   end
 
 end

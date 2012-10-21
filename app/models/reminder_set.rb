@@ -21,5 +21,38 @@ class ReminderSet
   validates_presence_of :send_at, message: 'A time to send this reminder is required.'
   validates_presence_of :reminder_msg_tmpl, message: "A message template is required."
 
+  state_machine :status, :initial => :pending do
+    event :start do
+      transition :pending => :started
+    end
+    event :completed do
+      transition :started => :completed
+    end
+    event :completed_with_errors do
+      transition :started => :completed_with_errors
+    end
+    event :cancel do
+      transition :pending => :canceled
+    end
+  end
+
+  after_create :log_created_event
+
+  def wrap_up_reminders
+    statuses = reminders.collect(&:status)
+    unless statuses.include?("failed")
+      completed
+    else
+      completed_with_errors
+    end
+  end
+
+  def log_created_event
+    Evently.record(self.provider, 'created', self)
+  end
+
+  def name
+    "Reminder Set"
+  end
 
 end

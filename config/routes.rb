@@ -1,5 +1,28 @@
 Reminderfy::Application.routes.draw do
-  devise_for :providers
+  ActiveAdmin.routes(self)
+
+  devise_for :admin_users, ActiveAdmin::Devise.config
+
+  devise_for :providers, :controllers => { :registrations => "registrations" }
+
+  root :to => "static#home"
+
+  authenticated :providers do
+    root :to => 'dashboard#show'
+  end
+
+  namespace :dashboard do
+    get :show
+  end
+
+
+  %w[home pricing contact faq].each do |page|
+    get page => 'static#'+page
+  end
+  match 'waiting_for_confirmation/:provider_id' => 'static#waiting_for_confirmation', via: :get, as: :waiting_for_confirmation
+
+
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

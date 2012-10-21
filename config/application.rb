@@ -64,5 +64,9 @@ module Reminderfy
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+
+    # Setting up class Observers in Mongoid
+    config.mongoid.observers = :reminder_set_observer, :reminder_observer, :communication_vehicle_observer
   end
 end

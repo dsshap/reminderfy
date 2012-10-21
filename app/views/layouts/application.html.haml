@@ -1,0 +1,16 @@
+!!! 5
+!= cc_html(:lang => "en") do
+  = render :partial => "shared/head"
+  %body
+    = render :partial => "shared/header"
+    .container
+      .flash
+        = render :partial => "shared/messages"
+      = yield
+
+    = render :partial => "shared/footer"
+
+    - if ENV['RAILS_ENV'] == 'development'
+      = render :partial => "shared/debug_console"
+    = render :partial => "shared/javascripts"
+

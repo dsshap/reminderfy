@@ -18,6 +18,7 @@ describe ReminderSet do
 
   context 'reminder creation' do
 
+
     it 'should not be a valid reminder' do
       provider = FactoryGirl.create(:provider)
       client = provider.clients.create!(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
@@ -52,6 +53,42 @@ describe ReminderSet do
       provider.reminder_sets.first.reminders.count.should eql(1)
     end
 
+    it 'should add the same client to two different reminder sets' do
+      provider = FactoryGirl.create(:provider)
+      client = provider.clients.create!(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
+      reminder_set = provider.reminder_sets.create! send_at: Time.now, reminder_msg_tmpl: "Test Msg"
+      reminder_set.reminders.create client: client
+
+      reminder_set = provider.reminder_sets.create! send_at: Time.now, reminder_msg_tmpl: "Test Msg"
+      reminder = reminder_set.reminders.create client: client
+
+      reminder.should be_valid
+
+      provider.reminder_sets.first.reminders.count.should eql(1)
+      provider.reminder_sets.last.reminders.count.should eql(1)
+    end
+
   end
+
+  context 'reminder_set execution' do
+
+    def set_remindersets_reminder_communications
+      provider = FactoryGirl.create(:provider)
+      client = provider.clients.create!(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
+      reminder_set = provider.reminder_sets.create! send_at: Time.now, reminder_msg_tmpl: "Test Msg"
+      reminder_set.reminders.create client: client
+    end
+
+    it 'should change reminder set to completed' do
+      set_remindersets_reminder_communications
+      provider = Provider.all.first
+      reminder_set = provider.reminder_sets.first
+      reminder_set.start
+
+      reminder_set.status.should eql("completed")
+    end
+
+  end
+
 
 end

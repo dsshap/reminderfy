@@ -49,6 +49,14 @@ describe Provider do
       c.provider_id.should eq(provider.id)
     end
 
+    it 'should require name for client' do
+      provider = FactoryGirl.create(:provider)
+      client = provider.clients.new(email: 'ja@example.com')
+
+      client.should_not be_valid
+      client.errors[:fname].should include('Client name must be entered')
+    end
+
     it 'should require phone number for client' do
       provider = FactoryGirl.create(:provider)
       client = provider.clients.new(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com')

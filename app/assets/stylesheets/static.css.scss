@@ -1,0 +1,26 @@
+body{
+  padding-bottom: 40px;
+  padding-top: 60px;
+}
+
+.sign_in_form_drop_down {
+  width: 195px;
+
+  .controls {
+    margin-left:0px;
+  }
+
+  > div {
+    margin-top:10px;
+  }
+
+  input {
+    width:160px;
+    margin-left: 10px;
+  }
+
+  input.btn[type="submit"]{
+    width: 174px;
+  }
+
+}
