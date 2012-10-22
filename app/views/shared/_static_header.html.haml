@@ -27,4 +27,5 @@
               = simple_form_for Provider.new, url: provider_session_path, html: { class: 'form-horizontal sign_in_form_drop_down'} do |f|
                 = f.input :email, label: false, placeholder: "Email", :autofocus => true
                 = f.input :password, label: false, placeholder: "Password", required: true
+                = f.input :remember_me, :as => :boolean, :inline_label => 'remember me', :label => false 
                 = f.submit "Sign In", class: 'btn btn-primary'

@@ -1,0 +1,14 @@
+= title("#{@provider.establishment_name}'s Clients")
+
+-content_for :sidebar do
+  .well.sidebar-nav
+    %ul.nav.nav-list
+      %li.nav-header
+        Client List
+    - @provider.clients.each do |client|
+      %li
+        = client.name
+
+
+-content_for :workspace do
+  %h2 Client Info

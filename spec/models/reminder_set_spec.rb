@@ -19,7 +19,7 @@ describe ReminderSet do
   context 'reminder creation' do
 
 
-    it 'should not be a valid reminder' do
+    it 'should not be a valid reminder without client' do
       provider = FactoryGirl.create(:provider)
       client = provider.clients.create!(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
       reminder_set = provider.reminder_sets.create send_at: Time.now, reminder_msg_tmpl: "Test Msg"
@@ -29,11 +29,21 @@ describe ReminderSet do
       reminder.errors[:client_id].should include('can\'t be blank')
     end
 
+    it 'should not be a valid reminder without appointment time' do
+      provider = FactoryGirl.create(:provider)
+      client = provider.clients.create!(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
+      reminder_set = provider.reminder_sets.create send_at: Time.now, reminder_msg_tmpl: "Test Msg"
+      reminder = reminder_set.reminders.new client: client
+
+      reminder.should_not be_valid
+      reminder.errors[:appointment_time].should include('can\'t be blank')
+    end
+
     it 'should create a reminder in a reminder_set' do
       provider = FactoryGirl.create(:provider)
       client = provider.clients.create!(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
       reminder_set = provider.reminder_sets.create! send_at: Time.now, reminder_msg_tmpl: "Test Msg"
-      reminder = reminder_set.reminders.new client: client
+      reminder = reminder_set.reminders.new client: client, appointment_time: Time.now
       reminder.save
 
       provider.reminder_sets.first.reminders.first.client_id.should eql(client.id)
@@ -44,8 +54,8 @@ describe ReminderSet do
       provider = FactoryGirl.create(:provider)
       client = provider.clients.create!(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
       reminder_set = provider.reminder_sets.create! send_at: Time.now, reminder_msg_tmpl: "Test Msg"
-      reminder_set.reminders.create client: client
-      reminder = reminder_set.reminders.new client: client
+      reminder_set.reminders.create client: client, appointment_time: Time.now
+      reminder = reminder_set.reminders.new client: client, appointment_time: Time.now
 
 
       reminder.should_not be_valid
@@ -57,10 +67,10 @@ describe ReminderSet do
       provider = FactoryGirl.create(:provider)
       client = provider.clients.create!(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
       reminder_set = provider.reminder_sets.create! send_at: Time.now, reminder_msg_tmpl: "Test Msg"
-      reminder_set.reminders.create client: client
+      reminder_set.reminders.create client: client, appointment_time: Time.now
 
       reminder_set = provider.reminder_sets.create! send_at: Time.now, reminder_msg_tmpl: "Test Msg"
-      reminder = reminder_set.reminders.create client: client
+      reminder = reminder_set.reminders.create client: client, appointment_time: Time.now
 
       reminder.should be_valid
 
@@ -76,7 +86,7 @@ describe ReminderSet do
       provider = FactoryGirl.create(:provider)
       client = provider.clients.create!(fname: 'Johnny', lname: 'Appleseed', email: 'ja@example.com', phone_number: '1234567890')
       reminder_set = provider.reminder_sets.create! send_at: Time.now, reminder_msg_tmpl: "Test Msg"
-      reminder_set.reminders.create client: client
+      reminder_set.reminders.create client: client, appointment_time: Time.now
     end
 
     it 'should change reminder set to completed' do

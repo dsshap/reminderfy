@@ -48,6 +48,10 @@ class Provider < Person
     establishment_name
   end
 
+  def provider_name
+    "#{fname} #{lname}"
+  end
+
   def find_by_client(client)
     clients.find(client.id) rescue nil
   end

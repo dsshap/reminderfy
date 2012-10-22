@@ -5,4 +5,8 @@
         %li
           = var.inspect
       %li
-        = @provider.to_json
+        Provider info:
+        = current_provider.to_json
+      %li
+        Provider Signed in:
+        = provider_signed_in?

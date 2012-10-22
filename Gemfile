@@ -30,9 +30,9 @@ gem "haml", "3.2.0.rc.1"
 gem "rails3-jquery-autocomplete", "~> 1.0.9"
 
 
-gem "kaminari", "~> 0.13.0"
+gem "kaminari", "0.14.1"
 gem "twilio-ruby", "~> 3.8.0"
-gem "evently", "~> 0.0.1"
+gem "evently", "~> 0.0.2"
 gem "state_machine", "~> 1.1.2"
 #gem "evently", :path => '/Users/davidshapiro/Documents/Gems/evently' #git: 'https://github.com/dsshap/evently.git'
 

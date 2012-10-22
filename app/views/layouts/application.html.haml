@@ -4,9 +4,11 @@
   %body
     = render :partial => "shared/header"
     .container
-      .flash
-        = render :partial => "shared/messages"
-      = yield
+      .row
+        .span12
+          .flash
+            = render :partial => "shared/messages"
+          = yield
 
     = render :partial => "shared/footer"
 

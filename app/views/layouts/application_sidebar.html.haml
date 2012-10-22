@@ -2,11 +2,16 @@
 != cc_html(:lang => "en") do
   = render :partial => "shared/head"
   %body
-    = render :partial => "shared/static_header"
-    .container
-      .flash
-        = render :partial => "shared/static_messages"
-      = yield
+    = render :partial => "shared/header"
+    .container-fluid
+      .row-fluid
+        .span3
+          = yield(:sidebar)
+        .span9
+          .flash
+            = render :partial => "shared/messages"
+          = yield(:workspace)
+    = yield
 
     = render :partial => "shared/footer"
 

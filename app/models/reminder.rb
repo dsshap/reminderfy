@@ -5,7 +5,8 @@ class Reminder
 
   embedded_in :reminder_set
 
-  field :client_id,     type: Moped::BSON::ObjectId
+  field :client_id,         type: Moped::BSON::ObjectId
+  field :appointment_time,  type: DateTime
 
   embeds_many :communication_vehicles, cascade_callbacks: true do
     def sms_messages
@@ -19,10 +20,10 @@ class Reminder
     end
   end
 
-  attr_accessible :client_id, :client
+  attr_accessible :client_id, :client, :appointment_time
   accepts_nested_attributes_for :communication_vehicles
 
-  validates_presence_of :client_id
+  validates_presence_of :client_id, :appointment_time
   validates_uniqueness_of :client_id, message: "Client is already part of this reminder set"
 
   before_create :create_communication_vehicles

@@ -5,15 +5,15 @@ Reminderfy::Application.routes.draw do
 
   devise_for :providers, :controllers => { :registrations => "registrations" }
 
-  root :to => "static#home"
-
-  authenticated :providers do
+  authenticated :provider do
     root :to => 'dashboard#show'
   end
 
-  namespace :dashboard do
-    get :show
-  end
+  root :to => "static#home"
+
+  match '/dashboard' => 'dashboard#show', via: :get, as: :dashboard
+  match '/my_plan' => 'dashboard#my_plan', via: :get, as: :my_plan
+  match '/clients' => 'dashboard#clients', via: :get, as: :clients
 
 
   %w[home pricing contact faq].each do |page|
